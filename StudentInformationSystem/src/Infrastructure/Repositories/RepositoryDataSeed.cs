@@ -12,6 +12,7 @@ public static class RepositoryDataSeed
             await SeedStudentData();
             await SeedCourseData();
             await SeedTeacherData();
+            await SeedEnrolmentData();
         }
 
         async Task SeedStudentData()
@@ -162,6 +163,66 @@ public static class RepositoryDataSeed
             foreach (var record in data)
             {
                 await teacherRepository.AddTeacher(record, CancellationToken.None);
+            }
+        }
+
+        async Task SeedEnrolmentData()
+        {
+            var enrolmentRepository = services.GetRequiredService<IEnrolmentRepository>();
+
+            var computerScienceCourseId = Guid.Parse("e2acab1c-2013-44a3-9ebf-54b4fe8d101e");
+            var civilEngineeringCourseId = Guid.Parse("2f0b182c-4aef-4f78-8d42-6b6f6d086f0a");
+
+            var data = new List<Enrolment>
+            {
+                new Enrolment
+                {
+                    EnrolmentId = Guid.Parse("c8b2f6bf-4597-4eaf-b8b3-43e3c06eb72f"),
+                    StudentId = Guid.Parse("90464B9C-AA9B-F3D5-F732-36CE392DCBC3"),
+                    CourseId = computerScienceCourseId
+                },
+                new Enrolment
+                {
+                    EnrolmentId = Guid.Parse("20d8b554-7796-4504-a718-2466f6de0653"),
+                    StudentId = Guid.Parse("9617DBDE-41CB-4C94-1046-DA41B83B5DD4"),
+                    CourseId = computerScienceCourseId
+                },
+                new Enrolment
+                {
+                    EnrolmentId = Guid.Parse("774603fe-7117-4b46-bce3-9b1cede76c54"),
+                    StudentId = Guid.Parse("B6C3C901-71F4-EA6C-2ADC-765E31921FD7"),
+                    CourseId = computerScienceCourseId
+                },
+                new Enrolment
+                {
+                    EnrolmentId = Guid.Parse("c8b2f6bf-4597-4eaf-b8b3-43e3c06eb72f"),
+                    StudentId = Guid.Parse("D54A190F-2BA7-834E-E042-1889EAC59CCC"),
+                    CourseId = computerScienceCourseId
+                },
+
+                new Enrolment
+                {
+                    EnrolmentId = Guid.Parse("70c59a38-fdb0-488c-bd62-90416274d752"),
+                    StudentId = Guid.Parse("90464B9C-AA9B-F3D5-F732-36CE392DCBC3"),
+                    CourseId = civilEngineeringCourseId
+                },
+                new Enrolment
+                {
+                    EnrolmentId = Guid.Parse("c090b32d-a096-409c-9bb7-60859fa673c4"),
+                    StudentId = Guid.Parse("C122E2FB-4492-373C-C337-6AC4EA081E71"),
+                    CourseId = civilEngineeringCourseId
+                },
+                new Enrolment
+                {
+                    EnrolmentId = Guid.Parse("63fd5241-c212-4e4c-81c4-3017e5dfee88"),
+                    StudentId = Guid.Parse("8C35B523-6B6B-0934-F199-2CA85986BD8F"),
+                    CourseId = civilEngineeringCourseId
+                }
+            };
+
+            foreach (var record in data)
+            {
+                await enrolmentRepository.AddEnrolment(record, CancellationToken.None);
             }
         }
     }

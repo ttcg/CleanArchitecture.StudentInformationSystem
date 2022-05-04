@@ -1,12 +1,14 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using StudentInformationSystem.Application;
 using StudentInformationSystem.Application.Common.Interfaces;
 using StudentInformationSystem.Infrastructure;
 using StudentInformationSystem.Infrastructure.Identity;
 using StudentInformationSystem.Infrastructure.Persistence;
 using StudentInformationSystem.Infrastructure.Repositories;
+using StudentInformationSystem.WebApi.Configurations;
 using StudentInformationSystem.WebApi.Filters;
 using WebApi.Services;
 
@@ -31,12 +33,14 @@ builder.Services.AddControllers(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGenWithSecurity();
+
 
 
 var app = builder.Build();
 
-using(var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
@@ -67,11 +71,14 @@ using(var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.OAuthClientId("postman");
+    c.OAuthClientSecret("8ZE7fDu4rcfHWYmK");
+    c.OAuthAppName("Swagger Api Calls");
+});
+
 
 app.UseRouting();
 app.UseHealthChecks("/health");

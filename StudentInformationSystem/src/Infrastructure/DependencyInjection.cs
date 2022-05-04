@@ -68,6 +68,7 @@ public static class DependencyInjection
         services.AddSingleton<IStudentRepository, InMemoryStudentRepository>();
         services.AddSingleton<ICourseRepository, InMemoryCourseRepository>();
         services.AddSingleton<ITeacherRepository, InMemoryTeacherRepository>();
+        services.AddSingleton<IEnrolmentRepository, InMemoryEnrolmentRepository>();
 
         services.AddAuthentication()
             .AddIdentityServerJwt();
