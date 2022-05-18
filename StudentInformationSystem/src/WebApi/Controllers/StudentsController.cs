@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentInformationSystem.Application.Common.Models;
+using StudentInformationSystem.Application.Enrolments.Dtos;
 using StudentInformationSystem.Application.Students.Queries.GetStudentById;
 using StudentInformationSystem.Application.Students.Queries.GetStudentsWithPagination;
+using StudentBriefDto = StudentInformationSystem.Application.Students.Queries.GetStudentsWithPagination.StudentBriefDto;
 
 namespace StudentInformationSystem.WebApi.Controllers;
 

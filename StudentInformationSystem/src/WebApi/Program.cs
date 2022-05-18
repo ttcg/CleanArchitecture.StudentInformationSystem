@@ -1,7 +1,6 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using StudentInformationSystem.Application;
 using StudentInformationSystem.Application.Common.Interfaces;
 using StudentInformationSystem.Infrastructure;
@@ -72,12 +71,7 @@ using (var scope = app.Services.CreateScope())
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.OAuthClientId("postman");
-    c.OAuthClientSecret("8ZE7fDu4rcfHWYmK");
-    c.OAuthAppName("Swagger Api Calls");
-});
+app.UseSwaggerUIWithSecurity();
 
 
 app.UseRouting();

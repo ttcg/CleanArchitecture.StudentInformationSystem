@@ -195,7 +195,7 @@ public static class RepositoryDataSeed
                 },
                 new Enrolment
                 {
-                    EnrolmentId = Guid.Parse("c8b2f6bf-4597-4eaf-b8b3-43e3c06eb72f"),
+                    EnrolmentId = Guid.Parse("1cf79ff1-2720-4465-a5eb-3216d1135759"),
                     StudentId = Guid.Parse("D54A190F-2BA7-834E-E042-1889EAC59CCC"),
                     CourseId = computerScienceCourseId
                 },

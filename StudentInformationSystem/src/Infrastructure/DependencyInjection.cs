@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StudentInformationSystem.Application.Common.Interfaces;
 using StudentInformationSystem.Application.Common.Interfaces.Repositories;
+using StudentInformationSystem.Application.Common.Interfaces.Services;
 using StudentInformationSystem.Infrastructure.Identity;
 using StudentInformationSystem.Infrastructure.Persistence;
 using StudentInformationSystem.Infrastructure.Repositories;
@@ -64,6 +65,7 @@ public static class DependencyInjection
 
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();
+        services.AddSingleton<IEnrolmentService, InMemoryEnrolmentService>();
 
         services.AddSingleton<IStudentRepository, InMemoryStudentRepository>();
         services.AddSingleton<ICourseRepository, InMemoryCourseRepository>();

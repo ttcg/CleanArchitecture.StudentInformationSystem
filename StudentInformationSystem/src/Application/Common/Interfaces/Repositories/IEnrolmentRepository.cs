@@ -7,6 +7,6 @@ namespace StudentInformationSystem.Application.Common.Interfaces.Repositories;
 public interface IEnrolmentRepository
 {
     Task<PaginatedList<Enrolment>> GetEnrolments(int pageNumber, int pageSize, EnrolmentFilter enrolmentFilter, CancellationToken cancellationToken);
-
     Task<Guid> AddEnrolment(Enrolment enrolment, CancellationToken cancellationToken);
+    Task<Enrolment> GetEnrolmentById(Guid enrolmentId, CancellationToken cancellationToken);
 }

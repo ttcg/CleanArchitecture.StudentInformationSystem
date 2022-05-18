@@ -25,7 +25,7 @@ public class InMemoryStudentRepository : IStudentRepository
     }
 
     public async Task<Student> GetStudentById(Guid studentId, CancellationToken cancellationToken)
-    { 
+    {
         return await Task.Run(() => _students.SingleOrDefault(x => x.StudentId == studentId));
     }
 

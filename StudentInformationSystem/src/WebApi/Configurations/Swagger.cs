@@ -8,6 +8,8 @@ public static class SwaggerConfiguration
     {
         services.AddSwaggerGen(c =>
         {
+            c.CustomSchemaIds(x => x.FullName);
+
             // Define the OAuth2.0 scheme
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
@@ -46,5 +48,17 @@ public static class SwaggerConfiguration
         });
 
         return services;
+    }
+
+    public static IApplicationBuilder UseSwaggerUIWithSecurity(this IApplicationBuilder app)
+    {
+        app.UseSwaggerUI(c =>
+        {
+            c.OAuthClientId("postman");
+            c.OAuthClientSecret("8ZE7fDu4rcfHWYmK");
+            c.OAuthAppName("Swagger Api Calls");
+        });
+
+        return app;
     }
 }

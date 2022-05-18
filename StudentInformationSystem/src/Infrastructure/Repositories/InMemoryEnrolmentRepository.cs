@@ -35,6 +35,11 @@ public class InMemoryEnrolmentRepository : IEnrolmentRepository
         });
     }
 
+    public async Task<Enrolment> GetEnrolmentById(Guid enrolmentId, CancellationToken cancellationToken)
+    {
+        return await Task.Run(() => _enrolments.SingleOrDefault(x => x.EnrolmentId == enrolmentId));
+    }
+
     public async Task<PaginatedList<Enrolment>> GetEnrolments(int pageNumber, int pageSize, EnrolmentFilter enrolmentFilters, CancellationToken cancellationToken)
     {
         return await Task.Run(() =>
