@@ -1,4 +1,5 @@
-﻿using StudentInformationSystem.Application.Common.Mappings;
+﻿using AutoMapper;
+using StudentInformationSystem.Application.Common.Mappings;
 using StudentInformationSystem.Domain.Entities;
 
 namespace StudentInformationSystem.Application.Enrolments.Queries.GetEnrolmentsWithPagination;
@@ -10,4 +11,6 @@ public class EnrolmentBriefDto : IMapFrom<Enrolment>
     public Guid CourseId { get; set; }
     public DateTime Created { get; set; }
     public DateTime Updated { get; set; }
+    public string StudentName { get; set; }
+    public string CourseName { get; set; }
 }

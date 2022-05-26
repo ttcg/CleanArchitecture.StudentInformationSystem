@@ -11,6 +11,7 @@ namespace StudentInformationSystem.WebApi.Controllers;
 public class EnrolmentsController : ApiControllerBase
 {
     [HttpGet]
+    [Produces(typeof(PaginatedList<EnrolmentBriefDto>))]
     public async Task<ActionResult<PaginatedList<EnrolmentBriefDto>>> GetEnrolmentsByFilter([FromQuery] GetEnrolmentsWithPaginationQuery query)
     {
         return await Mediator.Send(query);

@@ -8,7 +8,7 @@ public static class SwaggerConfiguration
     {
         services.AddSwaggerGen(c =>
         {
-            c.CustomSchemaIds(x => x.FullName);
+            c.CustomSchemaIds(x => OpenApiNamingHelper.SanitiseName(x.FullName));
 
             // Define the OAuth2.0 scheme
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -60,5 +60,22 @@ public static class SwaggerConfiguration
         });
 
         return app;
+    }
+
+    public static class OpenApiNamingHelper
+    {
+        private static List<char> ProhibitedCharacters() => new List<char> { '+', ' ' };
+
+        public static string SanitiseName(string originalName, char replacementCharacter = '_')
+        {
+            var sanitisedName = originalName;
+
+            foreach (var bannedCharacter in ProhibitedCharacters())
+            {
+                sanitisedName = sanitisedName.Replace(bannedCharacter, replacementCharacter);
+            }
+
+            return sanitisedName;
+        }
     }
 }

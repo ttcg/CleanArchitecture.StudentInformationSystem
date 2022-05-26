@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using MediatR;
-using StudentInformationSystem.Application.Common.Interfaces.Repositories;
+﻿using MediatR;
+using StudentInformationSystem.Application.Common.Interfaces.Services;
 using StudentInformationSystem.Application.Common.Models;
-using StudentInformationSystem.Domain.Entities;
 
 namespace StudentInformationSystem.Application.Enrolments.Queries.GetEnrolmentsWithPagination;
 
@@ -17,27 +15,19 @@ public class GetEnrolmentsWithPaginationQuery : IRequest<PaginatedList<Enrolment
 
 public class GetEnrolmentsWithPaginationQueryHandler : IRequestHandler<GetEnrolmentsWithPaginationQuery, PaginatedList<EnrolmentBriefDto>>
 {
-    private readonly IMapper _mapper;
-    private readonly IEnrolmentRepository _enrolmentRepository;
+    private readonly IEnrolmentService _enrolmentService;
 
-    public GetEnrolmentsWithPaginationQueryHandler(IEnrolmentRepository enrolmentRepository, IMapper mapper)
+    public GetEnrolmentsWithPaginationQueryHandler(IEnrolmentService enrolmentService)
     {
-        _enrolmentRepository = enrolmentRepository;
-        _mapper = mapper;
+        _enrolmentService = enrolmentService;
     }
 
     public async Task<PaginatedList<EnrolmentBriefDto>> Handle(GetEnrolmentsWithPaginationQuery request, CancellationToken cancellationToken)
     {
         var filter = EnrolmentFilter.Create(request.EnrolmentId, request.StudentId, request.CourseId);
 
-        var result = await _enrolmentRepository.GetEnrolments(request.PageNumber, request.PageSize, filter, cancellationToken);
+        var result = await _enrolmentService.GetEnrolmentsByPagination(request.PageNumber, request.PageSize, filter, cancellationToken);
 
-        var pagedList = new PaginatedList<EnrolmentBriefDto>(
-            _mapper.Map<List<Enrolment>, List<EnrolmentBriefDto>>(result.Items),
-            result.TotalCount,
-            result.PageNumber,
-            request.PageSize);
-
-        return pagedList;
+        return result;
     }
 }

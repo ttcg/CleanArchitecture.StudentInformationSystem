@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using StudentInformationSystem.Application.Common.Interfaces.Repositories;
 using StudentInformationSystem.Application.Common.Interfaces.Services;
+using StudentInformationSystem.Application.Common.Models;
+using StudentInformationSystem.Application.Enrolments;
 using StudentInformationSystem.Application.Enrolments.Dtos;
+using StudentInformationSystem.Application.Enrolments.Queries.GetEnrolmentsWithPagination;
 using StudentInformationSystem.Domain.Entities;
 
 namespace StudentInformationSystem.Infrastructure.Services;
@@ -42,6 +45,37 @@ public class InMemoryEnrolmentService : IEnrolmentService
             dto.Course = _mapper.Map<CourseBriefDto>(course);
 
             return dto;
+        });
+    }
+
+    public async Task<PaginatedList<EnrolmentBriefDto>> GetEnrolmentsByPagination(int pageNumber, int pageSize, EnrolmentFilter filter, CancellationToken cancellationToken)
+    {
+        return await Task.Run(async () =>
+        {
+            var result = await _enrolmentRepository.GetEnrolments(pageNumber, pageSize, filter, cancellationToken);
+
+            var enrolments = new List<EnrolmentBriefDto>();
+
+            foreach(var row in result.Items)
+            {
+                var enrolment = _mapper.Map<Enrolment, EnrolmentBriefDto>(row);
+
+                var student = await _studentRepository.GetStudentById(row.StudentId, cancellationToken);
+                enrolment.StudentName = student.StudentFullName;
+
+                var course = await _courseRepository.GetCourseById(enrolment.CourseId, cancellationToken);
+                enrolment.CourseName = course.CourseName;
+
+                enrolments.Add(enrolment);
+            }
+
+            var pagedList = new PaginatedList<EnrolmentBriefDto>(
+                enrolments,
+                result.TotalCount,
+                result.PageNumber,
+                pageSize);
+
+            return pagedList;
         });
     }
 }
