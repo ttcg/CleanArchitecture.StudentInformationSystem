@@ -16,9 +16,11 @@ namespace StudentInformationSystem.WebApi.Filters
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
                 { typeof(ValidationException), HandleValidationException },
-                { typeof(NotFoundException), HandleNotFoundException },
+                { typeof(NotFoundException), HandleNotFoundException },                
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
+                { typeof(UnknownStudentException), HandleNotFoundException },
+                { typeof(UnknownCourseException), HandleNotFoundException },
             };
         }
 

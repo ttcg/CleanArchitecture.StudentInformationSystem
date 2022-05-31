@@ -26,6 +26,7 @@ public class InMemoryEnrolmentRepository : IEnrolmentRepository
     {
         return await Task.Run(() =>
         {
+            enrolment.EnrolmentId = enrolment.EnrolmentId == Guid.Empty ? Guid.NewGuid() : enrolment.EnrolmentId;
             enrolment.Created = DateTime.UtcNow;
             enrolment.LastModified = DateTime.UtcNow;
 
