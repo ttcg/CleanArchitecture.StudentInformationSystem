@@ -9,4 +9,6 @@ public interface IEnrolmentRepository
     Task<PaginatedList<Enrolment>> GetEnrolments(int pageNumber, int pageSize, EnrolmentFilter enrolmentFilter, CancellationToken cancellationToken);
     Task<Guid> AddEnrolment(Enrolment enrolment, CancellationToken cancellationToken);
     Task<Enrolment> GetEnrolmentById(Guid enrolmentId, CancellationToken cancellationToken);
+    Task<bool> DoesEnrolmentExist(Guid studentId, Guid courseId, CancellationToken cancellationToken);
+    Task DeleteEnrolment(Guid studentId, Guid courseId, CancellationToken cancellationToken);
 }

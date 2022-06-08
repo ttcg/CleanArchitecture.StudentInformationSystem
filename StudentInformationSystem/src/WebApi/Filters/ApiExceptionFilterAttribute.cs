@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using StudentInformationSystem.Domain.Exceptions;
 
 namespace StudentInformationSystem.WebApi.Filters
 {
@@ -21,6 +22,7 @@ namespace StudentInformationSystem.WebApi.Filters
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
                 { typeof(UnknownStudentException), HandleNotFoundException },
                 { typeof(UnknownCourseException), HandleNotFoundException },
+                { typeof(DomainException), HandleDomainException },
             };
         }
 
@@ -34,6 +36,12 @@ namespace StudentInformationSystem.WebApi.Filters
         private void HandleException(ExceptionContext context)
         {
             Type type = context.Exception.GetType();
+
+            if (context.Exception is DomainException)
+            {
+                type = typeof(DomainException);
+            }
+
             if (_exceptionHandlers.ContainsKey(type))
             {
                 _exceptionHandlers[type].Invoke(context);
@@ -132,6 +140,26 @@ namespace StudentInformationSystem.WebApi.Filters
                 Status = StatusCodes.Status500InternalServerError,
                 Title = "An error occurred while processing your request.",
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+            };
+
+            context.Result = new ObjectResult(details)
+            {
+                StatusCode = StatusCodes.Status500InternalServerError
+            };
+
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleDomainException(ExceptionContext context)
+        {
+            var exception = (DomainException)context.Exception;
+
+            var details = new ProblemDetails
+            {
+                Status = StatusCodes.Status500InternalServerError,
+                Title = "Domain Error",
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                Detail = exception.Message
             };
 
             context.Result = new ObjectResult(details)

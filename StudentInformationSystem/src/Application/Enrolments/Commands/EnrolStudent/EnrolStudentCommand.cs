@@ -2,6 +2,7 @@
 using StudentInformationSystem.Application.Common.Exceptions;
 using StudentInformationSystem.Application.Common.Interfaces.Repositories;
 using StudentInformationSystem.Domain.Entities;
+using StudentInformationSystem.Domain.Exceptions;
 
 namespace StudentInformationSystem.Application.Enrolments.Commands.EnrolStudent;
 
@@ -50,6 +51,11 @@ public class EnrolStudentCommandHandler : IRequestHandler<EnrolStudentCommand, G
             if (course == null)
             {
                 throw new UnknownCourseException(request.CourseId);
+            }
+
+            if (await _enrolmentRepository.DoesEnrolmentExist(request.StudentId, request.CourseId, cancellationToken))
+            {
+                throw new DuplicateEnrolmentException(request.StudentId, request.CourseId);
             }
         }
     }

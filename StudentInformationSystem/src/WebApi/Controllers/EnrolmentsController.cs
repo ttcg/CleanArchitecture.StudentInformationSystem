@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentInformationSystem.Application.Common.Models;
+using StudentInformationSystem.Application.Enrolments.Commands.DropoutStudent;
 using StudentInformationSystem.Application.Enrolments.Commands.EnrolStudent;
 using StudentInformationSystem.Application.Enrolments.Dtos;
 using StudentInformationSystem.Application.Enrolments.Queries.GetEnrolmentById;
@@ -37,5 +38,19 @@ public class EnrolmentsController : ApiControllerBase
         var enrolmentId = await Mediator.Send(command);
 
         return CreatedAtAction(nameof(GetEnrolmentById), new { enrolmentId }, enrolmentId);
+    }
+
+    [HttpDelete]
+    public async Task<NoContentResult> DropoutStudent(DropoutStudentModel model)
+    {
+        var command = new DropoutStudentCommand
+        {
+            CourseId = model.CourseId,
+            StudentId = model.StudentId
+        };
+
+        var enrolmentId = await Mediator.Send(command);
+
+        return NoContent();
     }
 }

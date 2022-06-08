@@ -8,19 +8,6 @@ namespace StudentInformationSystem.Infrastructure.Repositories;
 public class InMemoryEnrolmentRepository : IEnrolmentRepository
 {
     public List<Enrolment> _enrolments = new();
-    IStudentRepository _studentRepository;
-    ITeacherRepository _teacherRepository;
-    ICourseRepository _courseRepository;
-
-    public InMemoryEnrolmentRepository(
-        IStudentRepository studentRepository, 
-        ITeacherRepository teacherRepository, 
-        ICourseRepository courseRepository)
-    {
-        _studentRepository = studentRepository;
-        _teacherRepository = teacherRepository;
-        _courseRepository = courseRepository;
-    }
 
     public async Task<Guid> AddEnrolment(Enrolment enrolment, CancellationToken cancellationToken)
     {
@@ -49,6 +36,24 @@ public class InMemoryEnrolmentRepository : IEnrolmentRepository
             var count = records.Count;
 
             return new PaginatedList<Enrolment>(records, count, pageNumber, pageSize);
+        });
+    }
+
+    public async Task<bool> DoesEnrolmentExist(Guid studentId, Guid courseId, CancellationToken cancellationToken)
+    {
+        return await Task.Run(() =>
+        {
+            return _enrolments.Any(x => x.StudentId == studentId && x.CourseId == courseId);
+        });
+    }
+
+    public async Task DeleteEnrolment(Guid studentId, Guid courseId, CancellationToken cancellationToken)
+    {
+        await Task.Run(() =>
+        {
+            var enrolmentToDelete = _enrolments.Single(x => x.StudentId == studentId && x.CourseId == courseId);
+
+            _enrolments.Remove(enrolmentToDelete);
         });
     }
 }
