@@ -26,7 +26,7 @@ public class GetEnrolmentsWithPaginationQueryHandler : IRequestHandler<GetEnrolm
     {
         var filter = EnrolmentFilter.Create(request.EnrolmentId, request.StudentId, request.CourseId);
 
-        var result = await _enrolmentService.GetEnrolmentsByPagination(request.PageNumber, request.PageSize, filter, cancellationToken);
+        var result = await _enrolmentService.GetEnrolmentsByPagination(request.PageNumber, request.PageSize, filter);
 
         return result;
     }

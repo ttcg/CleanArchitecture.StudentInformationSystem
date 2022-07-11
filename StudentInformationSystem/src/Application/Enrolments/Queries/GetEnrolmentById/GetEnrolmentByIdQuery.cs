@@ -32,7 +32,7 @@ public class GetEnrolmentByIdQueryHandler : IRequestHandler<GetEnrolmentByIdQuer
 
     public async Task<EnrolmentDto> Handle(GetEnrolmentByIdQuery request, CancellationToken cancellationToken)
     {
-        var result = await _enrolmentService.GetEnrolmentById(request.EnrolmentId, cancellationToken);
+        var result = await _enrolmentService.GetEnrolmentById(request.EnrolmentId);
 
         if (result == null)
         {

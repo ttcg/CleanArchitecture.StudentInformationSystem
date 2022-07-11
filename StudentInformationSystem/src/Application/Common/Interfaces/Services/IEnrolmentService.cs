@@ -7,6 +7,6 @@ namespace StudentInformationSystem.Application.Common.Interfaces.Services;
 
 public interface IEnrolmentService
 {
-    Task<EnrolmentDto> GetEnrolmentById(Guid enrolmentId, CancellationToken cancellationToken);
-    Task<PaginatedList<EnrolmentBriefDto>> GetEnrolmentsByPagination(int pageNumber, int pageSize, EnrolmentFilter filter, CancellationToken cancellationToken);
+    Task<EnrolmentDto> GetEnrolmentById(Guid enrolmentId, CancellationToken cancellationToken = default);
+    Task<PaginatedList<EnrolmentBriefDto>> GetEnrolmentsByPagination(int pageNumber, int pageSize, EnrolmentFilter filter, CancellationToken cancellationToken = default);
 }

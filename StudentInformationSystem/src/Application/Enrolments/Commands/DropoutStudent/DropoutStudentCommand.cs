@@ -23,13 +23,13 @@ public class DropoutStudentCommandHandler : IRequestHandler<DropoutStudentComman
     {
         await Validate();
 
-        await _enrolmentRepository.DeleteEnrolment(request.StudentId, request.CourseId, cancellationToken);
+        await _enrolmentRepository.DeleteEnrolment(request.StudentId, request.CourseId);
 
         return Unit.Value;
 
         async Task Validate()
         {
-            if (await _enrolmentRepository.DoesEnrolmentExist(request.StudentId, request.CourseId, cancellationToken) == false)
+            if (await _enrolmentRepository.DoesEnrolmentExist(request.StudentId, request.CourseId) == false)
             {
                 throw new NotFoundException($"enrolment not found for student id: {request.StudentId} and course id: {request.CourseId}");
             }

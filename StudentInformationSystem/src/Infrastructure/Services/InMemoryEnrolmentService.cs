@@ -52,7 +52,7 @@ public class InMemoryEnrolmentService : IEnrolmentService
     {
         return await Task.Run(async () =>
         {
-            var result = await _enrolmentRepository.GetEnrolments(pageNumber, pageSize, filter, cancellationToken);
+            var result = await _enrolmentRepository.GetEnrolments(pageNumber, pageSize, filter);
 
             var enrolments = new List<EnrolmentBriefDto>();
 

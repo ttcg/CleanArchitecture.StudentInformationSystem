@@ -37,7 +37,7 @@ public class EnrolStudentCommandHandler : IRequestHandler<EnrolStudentCommand, G
             StudentId = request.StudentId
         };
 
-        return await _enrolmentRepository.AddEnrolment(entity, cancellationToken);
+        return await _enrolmentRepository.AddEnrolment(entity);
 
         async Task Validate(EnrolStudentCommand request, CancellationToken cancellationToken)
         {
@@ -53,7 +53,7 @@ public class EnrolStudentCommandHandler : IRequestHandler<EnrolStudentCommand, G
                 throw new UnknownCourseException(request.CourseId);
             }
 
-            if (await _enrolmentRepository.DoesEnrolmentExist(request.StudentId, request.CourseId, cancellationToken))
+            if (await _enrolmentRepository.DoesEnrolmentExist(request.StudentId, request.CourseId))
             {
                 throw new DuplicateEnrolmentException(request.StudentId, request.CourseId);
             }

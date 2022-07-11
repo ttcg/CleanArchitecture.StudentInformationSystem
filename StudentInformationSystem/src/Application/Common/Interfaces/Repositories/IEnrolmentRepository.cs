@@ -6,9 +6,9 @@ namespace StudentInformationSystem.Application.Common.Interfaces.Repositories;
 
 public interface IEnrolmentRepository
 {
-    Task<PaginatedList<Enrolment>> GetEnrolments(int pageNumber, int pageSize, EnrolmentFilter enrolmentFilter, CancellationToken cancellationToken);
-    Task<Guid> AddEnrolment(Enrolment enrolment, CancellationToken cancellationToken);
-    Task<Enrolment> GetEnrolmentById(Guid enrolmentId, CancellationToken cancellationToken);
-    Task<bool> DoesEnrolmentExist(Guid studentId, Guid courseId, CancellationToken cancellationToken);
-    Task DeleteEnrolment(Guid studentId, Guid courseId, CancellationToken cancellationToken);
+    Task<PaginatedList<Enrolment>> GetEnrolments(int pageNumber, int pageSize, EnrolmentFilter enrolmentFilter, CancellationToken cancellationToken = default);
+    Task<Guid> AddEnrolment(Enrolment enrolment, CancellationToken cancellationToken = default);
+    Task<Enrolment> GetEnrolmentById(Guid enrolmentId, CancellationToken cancellationToken = default);
+    Task<bool> DoesEnrolmentExist(Guid studentId, Guid courseId, CancellationToken cancellationToken = default);
+    Task DeleteEnrolment(Guid studentId, Guid courseId, CancellationToken cancellationToken = default);
 }
