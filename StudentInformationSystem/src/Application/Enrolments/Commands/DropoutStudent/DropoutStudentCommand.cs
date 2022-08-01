@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using StudentInformationSystem.Application.Common.Exceptions;
 using StudentInformationSystem.Application.Common.Interfaces.Repositories;
+using StudentInformationSystem.Domain.Events;
 
 namespace StudentInformationSystem.Application.Enrolments.Commands.DropoutStudent;
 
@@ -23,7 +24,11 @@ public class DropoutStudentCommandHandler : IRequestHandler<DropoutStudentComman
     {
         await Validate();
 
-        await _enrolmentRepository.DeleteEnrolment(request.StudentId, request.CourseId);
+        var enrolment = await _enrolmentRepository.GetEnrolmentByKeyIds(request.StudentId, request.CourseId);
+
+        enrolment.DomainEvents.Add(new StudentDroppedOutEvent(enrolment.StudentId, enrolment.CourseId, enrolment.EnrolmentId));
+
+        await _enrolmentRepository.DeleteEnrolment(enrolment);
 
         return Unit.Value;
 

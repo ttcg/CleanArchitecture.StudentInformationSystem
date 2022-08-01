@@ -1,26 +1,36 @@
-﻿using StudentInformationSystem.Application.Common.Interfaces.Repositories;
+﻿using StudentInformationSystem.Application.Common.Interfaces;
+using StudentInformationSystem.Application.Common.Interfaces.Repositories;
 using StudentInformationSystem.Application.Common.Models;
 using StudentInformationSystem.Application.Enrolments;
+using StudentInformationSystem.Domain.Common;
 using StudentInformationSystem.Domain.Entities;
+using StudentInformationSystem.Domain.Events;
 
 namespace StudentInformationSystem.Infrastructure.Repositories;
 
 public class InMemoryEnrolmentRepository : IEnrolmentRepository
 {
     public List<Enrolment> _enrolments = new();
+    private readonly IDomainEventService _domainEventService;
+
+    public InMemoryEnrolmentRepository(IDomainEventService domainEventService)
+    {
+        _domainEventService = domainEventService;
+    }
 
     public async Task<Guid> AddEnrolment(Enrolment enrolment, CancellationToken cancellationToken)
     {
-        return await Task.Run(() =>
-        {
-            enrolment.EnrolmentId = enrolment.EnrolmentId == Guid.Empty ? Guid.NewGuid() : enrolment.EnrolmentId;
-            enrolment.Created = DateTime.UtcNow;
-            enrolment.LastModified = DateTime.UtcNow;
+        enrolment.EnrolmentId = enrolment.EnrolmentId == Guid.Empty ? Guid.NewGuid() : enrolment.EnrolmentId;
+        enrolment.Created = DateTime.UtcNow;
+        enrolment.LastModified = DateTime.UtcNow;
 
-            _enrolments.Add(enrolment);
+        _enrolments.Add(enrolment);
 
-            return enrolment.EnrolmentId;
-        });
+        enrolment.DomainEvents.Add(new StudentEnrolledEvent(enrolment.StudentId, enrolment.CourseId, enrolment.EnrolmentId));
+
+        await DispatchEvents(enrolment.DomainEvents.ToArray());
+
+        return enrolment.EnrolmentId;
     }
 
     public async Task<Enrolment> GetEnrolmentById(Guid enrolmentId, CancellationToken cancellationToken)
@@ -47,13 +57,23 @@ public class InMemoryEnrolmentRepository : IEnrolmentRepository
         });
     }
 
-    public async Task DeleteEnrolment(Guid studentId, Guid courseId, CancellationToken cancellationToken)
+    public async Task DeleteEnrolment(Enrolment enrolmentToDelete, CancellationToken cancellationToken)
     {
-        await Task.Run(() =>
-        {
-            var enrolmentToDelete = _enrolments.Single(x => x.StudentId == studentId && x.CourseId == courseId);
+        _enrolments.Remove(enrolmentToDelete);
+        await DispatchEvents(enrolmentToDelete.DomainEvents.ToArray());
+    }
 
-            _enrolments.Remove(enrolmentToDelete);
-        });
+    public async Task<Enrolment> GetEnrolmentByKeyIds(Guid studentId, Guid courseId, CancellationToken cancellationToken = default)
+    {
+        return await Task.Run(() => _enrolments.SingleOrDefault(x => x.StudentId == studentId && x.CourseId == courseId));
+    }
+
+    private async Task DispatchEvents(DomainEvent[] events)
+    {
+        foreach (var @event in events.Where(x => x.IsPublished == false))
+        {
+            @event.IsPublished = true;
+            await _domainEventService.Publish(@event);
+        }
     }
 }

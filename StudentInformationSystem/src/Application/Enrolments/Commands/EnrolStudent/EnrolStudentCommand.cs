@@ -31,13 +31,13 @@ public class EnrolStudentCommandHandler : IRequestHandler<EnrolStudentCommand, G
     {
         await Validate(request, cancellationToken);
 
-        var entity = new Enrolment
+        var enrolment = new Enrolment
         {
             CourseId = request.CourseId,
             StudentId = request.StudentId
-        };
+        };        
 
-        return await _enrolmentRepository.AddEnrolment(entity);
+        return await _enrolmentRepository.AddEnrolment(enrolment);
 
         async Task Validate(EnrolStudentCommand request, CancellationToken cancellationToken)
         {

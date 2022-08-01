@@ -34,7 +34,9 @@ public static class DependencyInjection
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
-        services.AddScoped<IDomainEventService, DomainEventService>();
+        services.AddSingleton<IExternalEventPublisher, ExternalEventPublisher>();
+        services.AddSingleton<IDomainEventService, DomainEventService>();
+
 
         services
             .AddDefaultIdentity<ApplicationUser>()

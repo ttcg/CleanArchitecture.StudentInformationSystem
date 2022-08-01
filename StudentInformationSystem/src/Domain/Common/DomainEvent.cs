@@ -1,17 +1,13 @@
 ﻿namespace StudentInformationSystem.Domain.Common
 {
-    public interface IHasDomainEvent
-    {
-        public List<DomainEvent> DomainEvents { get; set; }
-    }
-
-    public abstract class DomainEvent
+    public abstract class DomainEvent : IDomainEvent
     {
         protected DomainEvent()
         {
             DateOccurred = DateTimeOffset.UtcNow;
         }
         public bool IsPublished { get; set; }
+
         public DateTimeOffset DateOccurred { get; protected set; } = DateTime.UtcNow;
     }
 }
