@@ -41,4 +41,9 @@ public class InMemoryStudentRepository : IStudentRepository
             return student.StudentId;
         });
     }
+
+    public async Task ClearData(CancellationToken cancellationToken = default)
+    {
+        await Task.Run(() => _students.Clear());
+    }
 }

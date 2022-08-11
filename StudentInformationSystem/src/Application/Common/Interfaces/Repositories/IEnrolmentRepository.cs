@@ -12,4 +12,5 @@ public interface IEnrolmentRepository
     Task<bool> DoesEnrolmentExist(Guid studentId, Guid courseId, CancellationToken cancellationToken = default);
     Task<Enrolment> GetEnrolmentByKeyIds(Guid studentId, Guid courseId, CancellationToken cancellationToken = default);
     Task DeleteEnrolment(Enrolment enrolment, CancellationToken cancellationToken = default);
+    Task ClearData(CancellationToken cancellationToken = default);
 }

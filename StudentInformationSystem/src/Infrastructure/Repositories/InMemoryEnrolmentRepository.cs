@@ -76,4 +76,9 @@ public class InMemoryEnrolmentRepository : IEnrolmentRepository
             await _domainEventService.Publish(@event);
         }
     }
+
+    public async Task ClearData(CancellationToken cancellationToken = default)
+    {
+        await Task.Run(() => _enrolments.Clear());
+    }
 }

@@ -36,7 +36,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenWithSecurity();
 
 
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -85,3 +84,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

@@ -24,4 +24,9 @@ public class InMemoryCourseRepository : ICourseRepository
             return course.CourseId;
         });
     }
+
+    public async Task ClearData(CancellationToken cancellationToken = default)
+    {
+        await Task.Run(() => _courses.Clear());
+    }
 }

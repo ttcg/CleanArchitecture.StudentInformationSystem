@@ -36,4 +36,9 @@ public class InMemoryTeacherRepository : ITeacherRepository
             return teacher.TeacherId;
         });
     }
+
+    public async Task ClearData(CancellationToken cancellationToken = default)
+    {
+        await Task.Run(() => _teachers.Clear());
+    }
 }

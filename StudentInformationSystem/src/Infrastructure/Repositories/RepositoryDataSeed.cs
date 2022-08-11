@@ -19,6 +19,8 @@ public static class RepositoryDataSeed
         {
             var studentRepository = services.GetRequiredService<IStudentRepository>();
 
+            await studentRepository.ClearData();
+
             var data = new List<Student> {
                 new Student {
                     StudentId = Guid.Parse("90464B9C-AA9B-F3D5-F732-36CE392DCBC3"),
@@ -91,13 +93,15 @@ public static class RepositoryDataSeed
 
             foreach (var record in data)
             {
-                await studentRepository.AddStudent(record, CancellationToken.None);
+                await studentRepository.AddStudent(record);
             }
         }
 
         async Task SeedCourseData()
         {
             var courseRepository = services.GetRequiredService<ICourseRepository>();
+
+            await courseRepository.ClearData();
 
             var data = new List<Course> {
                 new Course {
@@ -124,13 +128,15 @@ public static class RepositoryDataSeed
 
             foreach (var record in data)
             {
-                await courseRepository.AddCourse(record, CancellationToken.None);
+                await courseRepository.AddCourse(record);
             }
         }
 
         async Task SeedTeacherData()
         {
             var teacherRepository = services.GetRequiredService<ITeacherRepository>();
+
+            await teacherRepository.ClearData();
 
             var data = new List<Teacher> {
                 new Teacher {
@@ -162,13 +168,15 @@ public static class RepositoryDataSeed
 
             foreach (var record in data)
             {
-                await teacherRepository.AddTeacher(record, CancellationToken.None);
+                await teacherRepository.AddTeacher(record);
             }
         }
 
         async Task SeedEnrolmentData()
         {
             var enrolmentRepository = services.GetRequiredService<IEnrolmentRepository>();
+
+            await enrolmentRepository.ClearData();
 
             var computerScienceCourseId = Guid.Parse("e2acab1c-2013-44a3-9ebf-54b4fe8d101e");
             var civilEngineeringCourseId = Guid.Parse("2f0b182c-4aef-4f78-8d42-6b6f6d086f0a");
@@ -222,10 +230,9 @@ public static class RepositoryDataSeed
 
             foreach (var record in data)
             {
-                await enrolmentRepository.AddEnrolment(record, CancellationToken.None);
+                await enrolmentRepository.AddEnrolment(record);
             }
+
         }
     }
 }
-
-
